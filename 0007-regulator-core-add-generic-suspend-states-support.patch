@@ -1,0 +1,104 @@
+From e1142219ae1f0370600b8afd5a80ee7f1423145d Mon Sep 17 00:00:00 2001
+From: Tobias Schramm <t.schramm@manjaro.org>
+Date: Thu, 28 May 2020 14:19:31 +0200
+Subject: [PATCH 07/24] regulator: core: add generic suspend states support
+
+This commit adds genric suspend support for regualtors without
+explicit suspend ops.
+Not sure if this would be accepted mainline, the reinitialization
+procedure might be unsafe.
+
+Signed-off-by: Tobias Schramm <t.schramm@manjaro.org>
+---
+ drivers/regulator/core.c         | 46 +++++++++++++++++++++++++++++---
+ include/linux/regulator/driver.h |  3 +++
+ 2 files changed, 46 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 42bbd99a36ac..72fb6f417c36 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -5411,6 +5411,14 @@ void regulator_unregister(struct regulator_dev *rdev)
+ EXPORT_SYMBOL_GPL(regulator_unregister);
+ 
+ #ifdef CONFIG_SUSPEND
++static inline int can_enable(struct regulator_dev *rdev) {
++	return rdev->ena_pin || rdev->desc->ops->enable;
++}
++
++static inline int can_disable(struct regulator_dev *rdev) {
++	return rdev->ena_pin || rdev->desc->ops->disable;
++}
++
+ /**
+  * regulator_suspend - prepare regulators for system wide suspend
+  * @dev: ``&struct device`` pointer that is passed to _regulator_suspend()
+@@ -5430,6 +5438,28 @@ static int regulator_suspend(struct device *dev)
+ 
+ 	regulator_lock(rdev);
+ 	ret = __suspend_set_state(rdev, rstate);
++	if (ret) {
++		goto out;
++	}
++
++	rstate = regulator_get_suspend_state(rdev, state);
++	if (rstate == NULL)
++		goto out;
++
++	if (rstate->enabled == ENABLE_IN_SUSPEND && can_enable(rdev)) {
++		if (!rdev->desc->ops->set_suspend_enable) {
++			rdev->resume_state = _regulator_is_enabled(rdev);
++			rdev_info(rdev, "Entering suspend %d, enabling forcibly, was %s\n", state, rdev->resume_state ? "on" : "off");
++			ret = _regulator_do_enable(rdev);
++		}
++	} else if (rstate->enabled == DISABLE_IN_SUSPEND && can_disable(rdev)) {
++		if (!rdev->desc->ops->set_suspend_disable) {
++			rdev->resume_state = _regulator_is_enabled(rdev);
++			rdev_info(rdev, "Entering suspend %d, disabling forcibly, was %s\n", state, rdev->resume_state ? "on" : "off");
++			ret = _regulator_do_disable(rdev);
++		}
++	}
++out:
+ 	regulator_unlock(rdev);
+ 
+ 	return ret;
+@@ -5452,9 +5482,19 @@ static int regulator_resume(struct device *dev)
+ 
+ 	regulator_lock(rdev);
+ 
+-	if (rstate->enabled == ENABLE_IN_SUSPEND ||
+-	    rstate->enabled == DISABLE_IN_SUSPEND)
+-		ret = rdev->desc->ops->resume(rdev);
++	if (rstate->enabled == ENABLE_IN_SUSPEND || rstate->enabled == DISABLE_IN_SUSPEND) {
++		if (rdev->desc->ops->resume) {
++			ret = rdev->desc->ops->resume(rdev);
++		} else if ((rstate->enabled == ENABLE_IN_SUSPEND && !rdev->desc->ops->set_suspend_enable) || 
++		           (rstate->enabled == DISABLE_IN_SUSPEND && !rdev->desc->ops->set_suspend_disable)) {
++			rdev_info(rdev, "Resuming, restoring state to %s\n", rdev->resume_state ? "on" : "off");
++			if (rdev->resume_state && can_enable(rdev)) {
++				ret = _regulator_do_enable(rdev);
++			} else if (!rdev->resume_state && can_disable(rdev)) {
++				ret = _regulator_do_disable(rdev);
++			}
++		}
++	}
+ 
+ 	regulator_unlock(rdev);
+ 
+diff --git a/include/linux/regulator/driver.h b/include/linux/regulator/driver.h
+index 11cade73726c..8a67654b5911 100644
+--- a/include/linux/regulator/driver.h
++++ b/include/linux/regulator/driver.h
+@@ -470,6 +470,9 @@ struct regulator_dev {
+ 
+ 	/* time when this regulator was disabled last time */
+ 	unsigned long last_off_jiffy;
++
++	/* state when resuming */
++	int resume_state;
+ };
+ 
+ struct regulator_dev *
+-- 
+2.30.0
+

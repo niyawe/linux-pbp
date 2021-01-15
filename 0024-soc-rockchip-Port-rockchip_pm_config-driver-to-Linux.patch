@@ -1,0 +1,27 @@
+From c04087388bdb7d79d5202ffb91aa387e36901056 Mon Sep 17 00:00:00 2001
+From: Tobias Schramm <t.schramm@manjaro.org>
+Date: Tue, 16 Jun 2020 21:29:29 +0200
+Subject: [PATCH 24/24] soc: rockchip: Port rockchip_pm_config driver to Linux
+ 5.8
+
+Signed-off-by: Tobias Schramm <t.schramm@manjaro.org>
+---
+ drivers/soc/rockchip/rockchip_pm_config.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/soc/rockchip/rockchip_pm_config.c b/drivers/soc/rockchip/rockchip_pm_config.c
+index 43b2e0f33343..07a0ff9465d3 100644
+--- a/drivers/soc/rockchip/rockchip_pm_config.c
++++ b/drivers/soc/rockchip/rockchip_pm_config.c
+@@ -99,7 +99,7 @@ static void rockchip_pm_virt_pwroff_prepare(void)
+ 
+ 	regulator_suspend_prepare(PM_SUSPEND_MEM);
+ 
+-	error = disable_nonboot_cpus();
++	error = freeze_secondary_cpus(0);
+ 	if (error) {
+ 		pr_err("Disable nonboot cpus failed!\n");
+ 		return;
+-- 
+2.30.0
+

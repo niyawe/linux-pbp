@@ -1,0 +1,49 @@
+From a9fc4f85ab2c3a50a6378cef95d9e7681aec7696 Mon Sep 17 00:00:00 2001
+From: Tobias Schramm <t.schramm@manjaro.org>
+Date: Thu, 28 May 2020 14:44:40 +0200
+Subject: [PATCH 20/24] arm64: dts: rockchip: add rockchip-suspend node
+
+No mainline
+
+Signed-off-by: Tobias Schramm <t.schramm@manjaro.org>
+---
+ .../boot/dts/rockchip/rk3399-pinebook-pro.dts | 23 +++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+index 37f967a89401..c505c88b5d9b 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+@@ -954,6 +954,29 @@ &pwm2 {
+ 	status = "okay";
+ };
+ 
++&rockchip_suspend {
++	status = "okay";
++	rockchip,sleep-debug-en = <1>;
++	rockchip,sleep-mode-config = <
++		(0
++		| RKPM_SLP_ARMPD
++		| RKPM_SLP_PERILPPD
++		| RKPM_SLP_DDR_RET
++		| RKPM_SLP_PLLPD
++		| RKPM_SLP_CENTER_PD
++		| RKPM_SLP_AP_PWROFF
++		)
++	>;
++	rockchip,pwm-regulator-config = <
++		(0
++		| PWM2_REGULATOR_EN
++		)
++	>;
++	rockchip,power-ctrl =
++		<&gpio1 RK_PC1 GPIO_ACTIVE_HIGH>,
++		<&gpio1 RK_PB6 GPIO_ACTIVE_HIGH>;
++};
++
+ &saradc {
+ 	vref-supply = <&vcca1v8_s3>;
+ 	status = "okay";
+-- 
+2.30.0
+

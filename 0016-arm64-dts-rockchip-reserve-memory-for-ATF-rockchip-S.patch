@@ -1,0 +1,45 @@
+From cde519324b4ef9c2e19b3c53b2402a3d9807dd98 Mon Sep 17 00:00:00 2001
+From: Tobias Schramm <t.schramm@manjaro.org>
+Date: Thu, 28 May 2020 14:40:31 +0200
+Subject: [PATCH 16/24] arm64: dts: rockchip: reserve memory for ATF rockchip
+ SIP
+
+Definitely not for mainline
+
+Signed-off-by: Tobias Schramm <t.schramm@manjaro.org>
+---
+ arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+index c1aad8f88b8a..7595633d9a7f 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+@@ -23,6 +23,11 @@ chosen {
+ 		stdout-path = "serial2:1500000n8";
+ 	};
+ 
++	memory {
++		device_type = "memory";
++		reg = <0x0 0x00200000 0x0 0xf7e00000>;
++	};
++
+ 	backlight: edp-backlight {
+ 		compatible = "pwm-backlight";
+ 		power-supply = <&vcc_12v>;
+@@ -133,6 +138,12 @@ sdio_pwrseq: sdio-pwrseq {
+ 		reset-gpios = <&gpio0 RK_PB2 GPIO_ACTIVE_LOW>;
+ 	};
+ 
++	/* first 128k(0xff8d0000~0xff8f0000) for ddr and ATF */
++	sram@ff8d0000 {
++		compatible = "mmio-sram";
++		reg = <0x0 0xff8d0000 0x0 0x20000>; /* 128k */
++	};
++
+ 	/* Audio components */
+ 	es8316-sound {
+ 		compatible = "simple-audio-card";
+-- 
+2.30.0
+
