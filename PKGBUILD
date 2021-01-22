@@ -6,7 +6,7 @@ pkgbase=linux-pbp
 _srcname=linux
 _kernelname=${pkgbase#linux}
 _desc="Linux kernel with patches for the Pinebook Pro."
-pkgver=5.10.7
+pkgver=5.10.9
 pkgrel=1
 arch=('aarch64')
 url="http://www.kernel.org/"
@@ -49,7 +49,7 @@ source=("git+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git#ta
         "${_patches[@]}"
     )
 md5sums=('SKIP'
-         '9e85d8b616b4b166d42136837fe17bda'
+         '713bdbe1c6a3337cf0248639a92cfb3f'
          '86d4a35722b5410e3b29fc92dae15d4b'
          'ce6c81ad1ad1f8b333fd6077d47abdaf'
          '3dc88030a8f2f5a5f97266d99b149f77'
@@ -98,6 +98,9 @@ build() {
   cd ${_srcname}
 
   make "${MAKEFLAGS[@]}" prepare
+
+  #make menuconfig
+  #exit 1
 
   unset LDFLAGS
   make "${MAKEFLAGS[@]}" Image Image.gz modules
