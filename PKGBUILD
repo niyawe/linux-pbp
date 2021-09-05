@@ -6,7 +6,7 @@ pkgbase=linux-pbp
 _srcname=linux
 _kernelname=${pkgbase#linux}
 _desc="Linux kernel with patches for the Pinebook Pro."
-pkgver=5.11.6
+pkgver=5.14.1
 pkgrel=1
 arch=('aarch64')
 url="http://www.kernel.org/"
@@ -15,30 +15,24 @@ makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'git' 'uboot-tools' '
 options=('!strip')
 
 _patches=(
-        '0001-soc-rockchip-Add-rockchip-suspend-mode-driver.patch'
-        '0002-firmware-Add-Rockchip-SIP-driver.patch'
-        '0003-tty-serdev-support-shutdown-op.patch'
-        '0004-bluetooth-hci_serdev-Clear-registered-bit-on-unregis.patch'
-        '0005-bluetooth-hci_bcm-disable-power-on-shutdown.patch'
-        '0006-mmc-core-pwrseq_simple-disable-mmc-power-on-shutdown.patch'
-        '0007-regulator-core-add-generic-suspend-states-support.patch'
-        '0008-usb-typec-bus-Catch-crash-due-to-partner-NULL-value.patch'
-        '0009-usb-typec-tcpm-add-hacky-generic-altmode-support.patch'
-        '0010-phy-rockchip-typec-Set-extcon-capabilities.patch'
-        '0011-usb-typec-altmodes-displayport-Add-hacky-generic-alt.patch'
-        '0012-sound-soc-codecs-es8316-Run-micdetect-only-if-jack-s.patch'
-        '0013-ASoC-soc-jack.c-supported-inverted-jack-detect-GPIOs.patch'
-        '0014-arm64-dts-rockchip-add-default-rk3399-rockchip-suspe.patch'
-        '0015-arm64-dts-rockchip-enable-earlycon.patch'
-        '0016-arm64-dts-rockchip-reserve-memory-for-ATF-rockchip-S.patch'
-        '0017-arm64-dts-rockchip-use-power-led-for-disk-activity-i.patch'
-        '0018-arm64-dts-rockchip-add-oficially-unsupported-2GHz-op.patch'
-        '0019-arm64-dts-rockchip-add-typec-extcon-hack.patch'
-        '0020-arm64-dts-rockchip-add-rockchip-suspend-node.patch'
-        '0021-arm64-configs-add-defconfig-for-Pinebook-Pro.patch'
-        '0022-arm64-dts-rockchip-setup-USB-type-c-port-as-dual-dat.patch'
-        '0023-arm64-configs-Update-Pinbook-Pro-defconfig-to-v5.8-r.patch'
-        '0024-soc-rockchip-Port-rockchip_pm_config-driver-to-Linux.patch'
+	'0001-soc-rockchip-Add-rockchip-suspend-mode-driver.patch'
+	'0002-firmware-Add-Rockchip-SIP-driver.patch'
+	'0003-tty-serdev-support-shutdown-op.patch'
+	'0004-bluetooth-hci_serdev-Clear-registered-bit-on-unregis.patch'
+	'0005-bluetooth-hci_bcm-disable-power-on-shutdown.patch'
+	'0006-mmc-core-pwrseq_simple-disable-mmc-power-on-shutdown.patch'
+	'0007-regulator-core-add-generic-suspend-states-support.patch'
+	'0008-sound-soc-codecs-es8316-Run-micdetect-only-if-jack-s.patch'
+	'0009-ASoC-soc-jack.c-supported-inverted-jack-detect-GPIOs.patch'
+	'0010-arm64-dts-rockchip-add-default-rk3399-rockchip-suspe.patch'
+	'0011-arm64-dts-rockchip-enable-earlycon.patch'
+	'0012-arm64-dts-rockchip-reserve-memory-for-ATF-rockchip-S.patch'
+	'0013-arm64-dts-rockchip-use-power-led-for-disk-activity-i.patch'
+	'0014-arm64-dts-rockchip-add-oficially-unsupported-2GHz-op.patch'
+	'0015-rm64-dts-rockchip-add-rockchip-suspend-node.patch'
+	'0016-arm64-configs-add-defconfig-for-Pinebook-Pro.patch'
+	'0017-soc-rockchip-Port-rockchip_pm_config-driver-to-Linux.patch'
+	'0018-arm64-dts-rockchip-remove-cdn-dp.patch'
 )
 
 source=("git+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git#tag=v${pkgver}"
@@ -49,40 +43,34 @@ source=("git+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git#ta
         "${_patches[@]}"
     )
 md5sums=('SKIP'
-         'd9897ac0e82502634981b10aad2355c0'
+         'adee4e7a6245dde95177e879344d890d'
          '86d4a35722b5410e3b29fc92dae15d4b'
          'ce6c81ad1ad1f8b333fd6077d47abdaf'
          '3dc88030a8f2f5a5f97266d99b149f77'
-         '15c87074b72ca111dc533817670ce548'
-         '5922f2f5929fc567528e9f17254c93ac'
-         'b1abcecbe4818552d26515ea085132a9'
-         '50d1486c8c652b5bc127cc6b11d18509'
-         '8c5e7673e74c1a31375941fb3a704a66'
-         'e9d3c512b0ef1e92034c630da933fbd3'
-         '0d61dc8a11ab90be9c1eb1f5b1851424'
-         '884bec810c1db23a3e255dd4b7beef30'
-         'bc894223e2bfc46bc20b492aee6a0ea8'
-         'c3ee46833279257bc7fd036b08d9c2b4'
-         '6a41790b279475cab4a2e9e35034b7b8'
-         '6b39dae784a341cc8d7d83513e826310'
-         '6a246a9cbffdbabc16f38cc9b1afa11b'
-         '8b1cd4bd08a66b07b09a2888239481e8'
-         'abfaaab063b3e5459b85cc358d9425a4'
-         'c63163f19d0c666ed9f577e41b0d8824'
-         '9416a7b86a5a4e02ab08736407206a00'
-         '45685ea1cc01ee9560feb87f54d069e6'
-         'f6a560287f1768f883b57b5b01f221d2'
-         'ac6c813292d4d3fb80d8409dd2764680'
-         '312dd823d7f6e838395504986b57b429'
-         '767a0cd145340eb0a2406295991b4b58'
-         '607ce1148787ccace9d6a50d3ee1182b'
-         '56c5f9a708d4685b8ca672fcd6bb7149')
+         '4d163f49bcf294889d6b6db636e5be38'
+         'b19cfd6998d3bcf09a9eb4c4812215a7'
+         '80402f1550ae4c809f3e18b80498cb9f'
+         '04855fe513563128d8fa81cad4187208'
+         'f7bc3a6100af698bbe51938f60067fee'
+         '531c1403f8c02d6e3ade9f5b3f93139a'
+         'dfe9345b526683d83d4582dcdf23bd3a'
+         '1940c1c0e4b4713d1e8cdb11fb672311'
+         '038ac1789e4bada763cf1733357468da'
+         'eb58c80651ab527de4bf8a0c7d4a333d'
+         '988b1a32a374f1485333d438da41ba9c'
+         '4b690d5071f03784ff113d0fcdb53388'
+         '3fde3c2df2badefc5595a980f007ef72'
+         '7ddbbb9ae78d6f4f5196fa1bc495a8da'
+         '2d5f25d6e2839daa9abe4ce89daeb665'
+         'a0e8d15a6e0da5e35d66e3df6672a2e3'
+         'c43edbc576b0739b1c089e05d3904fa5'
+         '8b15a5d6bbeee59678eb2c13cc77e459')
 
 prepare() {
   cd ${_srcname}
 
   for patch in "${_patches[@]}"; do
-    patch -Np1 -i "${srcdir}/$patch"
+    git apply "${srcdir}/$patch"
   done
 
   cat "${srcdir}/config" > ./.config

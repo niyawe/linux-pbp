@@ -1,7 +1,7 @@
-From 8d1dd5bc0edbed8a69179ba88eaa8d8195f7c6df Mon Sep 17 00:00:00 2001
-From: Tobias Schramm <t.schramm@manjaro.org>
-Date: Thu, 28 May 2020 14:38:03 +0200
-Subject: [PATCH 14/24] arm64: dts: rockchip: add default rk3399
+From 3971c8b7c55e0d3c76f49c8b3f8ae9932d052272 Mon Sep 17 00:00:00 2001
+From: Niklas Yann Wettengel <niyawe@niyawe.de>
+Date: Sat, 4 Sep 2021 13:12:41 +0000
+Subject: [PATCH 10/17] arm64: dts: rockchip: add default rk3399
  rockchip-suspend node
 
 Again this has no place in mainline. Should be handled by ATF
@@ -13,7 +13,7 @@ Signed-off-by: Tobias Schramm <t.schramm@manjaro.org>
  1 file changed, 24 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399.dtsi b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-index ada724b12f01..c69d71544eb5 100644
+index 3871c7fd83b0..c92ae942418d 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
 @@ -9,6 +9,7 @@
@@ -24,7 +24,7 @@ index ada724b12f01..c69d71544eb5 100644
  #include <dt-bindings/thermal/thermal.h>
  
  / {
-@@ -2677,4 +2678,27 @@ pcie_clkreqnb_cpm: pci-clkreqnb-cpm {
+@@ -2711,4 +2712,27 @@ pcie_clkreqnb_cpm: pci-clkreqnb-cpm {
  		};
  
  	};
@@ -53,5 +53,5 @@ index ada724b12f01..c69d71544eb5 100644
 +	};
  };
 -- 
-2.30.0
+2.31.1
 

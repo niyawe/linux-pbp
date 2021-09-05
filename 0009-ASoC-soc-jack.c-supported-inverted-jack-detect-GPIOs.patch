@@ -1,7 +1,7 @@
-From edbf5d93dbd845faa4aa74fb8a7c5e76cf35ef0d Mon Sep 17 00:00:00 2001
-From: Tobias Schramm <t.schramm@manjaro.org>
-Date: Thu, 28 May 2020 14:36:47 +0200
-Subject: [PATCH 13/24] ASoC: soc-jack.c: supported inverted jack detect GPIOs
+From 11108f81753585856279fb4784bbb005fbed4c73 Mon Sep 17 00:00:00 2001
+From: Niklas Yann Wettengel <niyawe@niyawe.de>
+Date: Sat, 4 Sep 2021 13:12:03 +0000
+Subject: [PATCH 09/17] ASoC: soc-jack.c: supported inverted jack detect GPIOs
 
 Signed-off-by: Tobias Schramm <t.schramm@manjaro.org>
 ---
@@ -41,5 +41,5 @@ index 0f1820f36b4d..8d9d77814f33 100644
  			if (ret)
  				goto undo;
 -- 
-2.30.0
+2.31.1
 

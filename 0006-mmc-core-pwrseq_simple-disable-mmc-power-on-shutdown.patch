@@ -1,7 +1,7 @@
-From f6419edc62979c1e67202b5dc10abd7b22bdedcf Mon Sep 17 00:00:00 2001
-From: Tobias Schramm <t.schramm@manjaro.org>
-Date: Thu, 28 May 2020 14:16:52 +0200
-Subject: [PATCH 06/24] mmc: core: pwrseq_simple: disable mmc power on shutdown
+From 590c299299414eb78065b1ef878a541b249966e5 Mon Sep 17 00:00:00 2001
+From: Niklas Yann Wettengel <niyawe@niyawe.de>
+Date: Sat, 4 Sep 2021 12:45:16 +0000
+Subject: [PATCH 06/17] mmc: core: pwrseq_simple: disable mmc power on shutdown
 
 Fix for Broadcom SDIO WiFi modules. They misbehave if reinitialized
 without a power cycle.
@@ -60,5 +60,5 @@ index ea4d3670560e..38fe7e29aba6 100644
  		.name = "pwrseq_simple",
  		.of_match_table = mmc_pwrseq_simple_of_match,
 -- 
-2.30.0
+2.31.1
 

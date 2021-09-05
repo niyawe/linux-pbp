@@ -1,7 +1,7 @@
-From 824a740372a795599a35731027b528610019be28 Mon Sep 17 00:00:00 2001
-From: Tobias Schramm <t.schramm@manjaro.org>
-Date: Thu, 28 May 2020 14:11:05 +0200
-Subject: [PATCH 02/24] firmware: Add Rockchip SIP driver
+From bbc48322649f08c539176acbf78760a78dc42a22 Mon Sep 17 00:00:00 2001
+From: Niklas Yann Wettengel <niyawe@niyawe.de>
+Date: Sat, 4 Sep 2021 12:42:38 +0000
+Subject: [PATCH 02/17] firmware: Add Rockchip SIP driver
 
 Used exclusively for suspend signaling. Drop for mainline and
 use PSCI
@@ -17,10 +17,10 @@ Signed-off-by: Tobias Schramm <t.schramm@manjaro.org>
  create mode 100644 include/linux/rockchip/rockchip_sip.h
 
 diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
-index 3315e3c21586..1dfa18dde097 100644
+index 1db738d5b301..d8c838fbc30a 100644
 --- a/drivers/firmware/Kconfig
 +++ b/drivers/firmware/Kconfig
-@@ -250,6 +250,13 @@ config QCOM_SCM_DOWNLOAD_MODE_DEFAULT
+@@ -251,6 +251,13 @@ config QCOM_SCM_DOWNLOAD_MODE_DEFAULT
  
  	  Say Y here to enable "download mode" by default.
  
@@ -35,10 +35,10 @@ index 3315e3c21586..1dfa18dde097 100644
  	tristate "TI System Control Interface (TISCI) Message Protocol"
  	depends on TI_MESSAGE_MANAGER
 diff --git a/drivers/firmware/Makefile b/drivers/firmware/Makefile
-index 5e013b6a3692..85c40483e5fa 100644
+index 546ac8e7f6d0..9037db82f42b 100644
 --- a/drivers/firmware/Makefile
 +++ b/drivers/firmware/Makefile
-@@ -28,6 +28,7 @@ obj-y				+= meson/
+@@ -29,6 +29,7 @@ obj-y				+= meson/
  obj-$(CONFIG_GOOGLE_FIRMWARE)	+= google/
  obj-$(CONFIG_EFI)		+= efi/
  obj-$(CONFIG_UEFI_CPER)		+= efi/
@@ -470,5 +470,5 @@ index 000000000000..b19f64ede981
 +
 +#endif
 -- 
-2.30.0
+2.31.1
 

@@ -1,12 +1,10 @@
-From e1142219ae1f0370600b8afd5a80ee7f1423145d Mon Sep 17 00:00:00 2001
-From: Tobias Schramm <t.schramm@manjaro.org>
-Date: Thu, 28 May 2020 14:19:31 +0200
-Subject: [PATCH 07/24] regulator: core: add generic suspend states support
+From ba11c450d787a94c06543969d0659a6c078b5d89 Mon Sep 17 00:00:00 2001
+From: Niklas Yann Wettengel <niyawe@niyawe.de>
+Date: Sat, 4 Sep 2021 12:48:39 +0000
+Subject: [PATCH 07/17] regulator: core: add generic suspend states support
 
-This commit adds genric suspend support for regualtors without
-explicit suspend ops.
-Not sure if this would be accepted mainline, the reinitialization
-procedure might be unsafe.
+This commit adds genric suspend support for regualtors without explicit suspend ops.
+Not sure if this would be accepted mainline, the reinitialization procedure might be unsafe.
 
 Signed-off-by: Tobias Schramm <t.schramm@manjaro.org>
 ---
@@ -15,10 +13,10 @@ Signed-off-by: Tobias Schramm <t.schramm@manjaro.org>
  2 files changed, 46 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 42bbd99a36ac..72fb6f417c36 100644
+index ca6caba8a191..d0d3b389ac56 100644
 --- a/drivers/regulator/core.c
 +++ b/drivers/regulator/core.c
-@@ -5411,6 +5411,14 @@ void regulator_unregister(struct regulator_dev *rdev)
+@@ -5587,6 +5587,14 @@ void regulator_unregister(struct regulator_dev *rdev)
  EXPORT_SYMBOL_GPL(regulator_unregister);
  
  #ifdef CONFIG_SUSPEND
@@ -33,7 +31,7 @@ index 42bbd99a36ac..72fb6f417c36 100644
  /**
   * regulator_suspend - prepare regulators for system wide suspend
   * @dev: ``&struct device`` pointer that is passed to _regulator_suspend()
-@@ -5430,6 +5438,28 @@ static int regulator_suspend(struct device *dev)
+@@ -5606,6 +5614,28 @@ static int regulator_suspend(struct device *dev)
  
  	regulator_lock(rdev);
  	ret = __suspend_set_state(rdev, rstate);
@@ -62,7 +60,7 @@ index 42bbd99a36ac..72fb6f417c36 100644
  	regulator_unlock(rdev);
  
  	return ret;
-@@ -5452,9 +5482,19 @@ static int regulator_resume(struct device *dev)
+@@ -5628,9 +5658,19 @@ static int regulator_resume(struct device *dev)
  
  	regulator_lock(rdev);
  
@@ -86,13 +84,13 @@ index 42bbd99a36ac..72fb6f417c36 100644
  	regulator_unlock(rdev);
  
 diff --git a/include/linux/regulator/driver.h b/include/linux/regulator/driver.h
-index 11cade73726c..8a67654b5911 100644
+index 4aec20387857..17043e440217 100644
 --- a/include/linux/regulator/driver.h
 +++ b/include/linux/regulator/driver.h
-@@ -470,6 +470,9 @@ struct regulator_dev {
- 
- 	/* time when this regulator was disabled last time */
- 	unsigned long last_off_jiffy;
+@@ -635,6 +635,9 @@ struct regulator_dev {
+ 	int cached_err;
+ 	bool use_cached_err;
+ 	spinlock_t err_lock;
 +
 +	/* state when resuming */
 +	int resume_state;
@@ -100,5 +98,5 @@ index 11cade73726c..8a67654b5911 100644
  
  struct regulator_dev *
 -- 
-2.30.0
+2.31.1
 

@@ -1,7 +1,7 @@
-From c04087388bdb7d79d5202ffb91aa387e36901056 Mon Sep 17 00:00:00 2001
-From: Tobias Schramm <t.schramm@manjaro.org>
-Date: Tue, 16 Jun 2020 21:29:29 +0200
-Subject: [PATCH 24/24] soc: rockchip: Port rockchip_pm_config driver to Linux
+From fad35e2b4c2edd69f0d2a92d10853af13e1dce2c Mon Sep 17 00:00:00 2001
+From: Niklas Yann Wettengel <niyawe@niyawe.de>
+Date: Sat, 4 Sep 2021 13:23:41 +0000
+Subject: [PATCH 17/17] soc: rockchip: Port rockchip_pm_config driver to Linux
  5.8
 
 Signed-off-by: Tobias Schramm <t.schramm@manjaro.org>
@@ -23,5 +23,5 @@ index 43b2e0f33343..07a0ff9465d3 100644
  		pr_err("Disable nonboot cpus failed!\n");
  		return;
 -- 
-2.30.0
+2.31.1
 
